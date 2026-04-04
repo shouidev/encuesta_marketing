@@ -567,7 +567,7 @@ raw.forEach(trial => {
   // PRODUCTO INTERÉS
   //////////////////////////////////////
   if(trial.tipo === "producto"){
-    limpio.interes = getResp();
+    limpio.interes = getResp()+1;
   }
 
   //////////////////////////////////////
@@ -582,7 +582,7 @@ raw.forEach(trial => {
   // DISPOSITIVO
   //////////////////////////////////////
   if(trial.tipo === "dispositivo"){
-    limpio.confianza = trial.response.Q0;
+    limpio.confianza_tec = trial.response.Q0;
     limpio.dudas = trial.response.Q1;
   }
 
