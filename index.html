@@ -150,13 +150,10 @@ try {
 let formData = new FormData();
 formData.append("data", JSON.stringify(data));
 
-await fetch("https://script.google.com/macros/s/AKfycbxLrqJsM0vhxWkrCHQElwPwYN2GCjlhSYrZe4zL_QmUo5QGnueSzDlcA_AHTI6rzjXo3w/exec", {
-method: "POST",
-mode: "no-cors",
-headers: {
-"Content-Type": "application/json",
-},
-body: JSON.stringify(data),
+await fetch("https://script.google.com/macros/s/AKfycbwIglxagBdZEbE3u2Cn-5sE2V8FrUkTSuai3Y4wdT9YCZ8vQ0_LUtvvOcfg6gU22Ellug/exec", {
+  method: "POST",
+  mode: "no-cors",
+  body: formData
 });
 
 } catch (error) {
@@ -624,6 +621,10 @@ box-shadow:0 0 10px rgba(0,0,0,0.1);
 // INICIAR
 
 jsPsych.run(timeline);
+
+</script>
+</body>
+</html>
 
 </script>
 </body>
