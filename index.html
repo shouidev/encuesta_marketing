@@ -244,8 +244,8 @@ timeline.push({
   data:{tipo: "convivencia_cocina"},
   name: "convivencia_cocina",
     questions:[{
-        prompt:"<b>¿Vivís con alguien?</b>",
-        options:["Sí", "No"],
+        prompt:"<b>¿Cuántas personas conforman tu hogar?</b>",
+        options:["1 (soy sólo yo)","2 (yo y alguien más)", "3 a 4 (yo y dos o tres personas más)","5 o más (yo y cuatro o más personas)"],
         required:true},
 
         {
@@ -255,26 +255,8 @@ timeline.push({
     ]
 });
 
-// CANTIDAD DE PERSONAS
 
-timeline.push({
-timeline:[{
-type: jsPsychSurveyMultiChoice,
-data:{tipo:"cant_personas"},
-name: "cant_personas",
-questions:[
-    {
-prompt:"<b>¿Con cuántas personas convivís?</b>",
-options:["1","2 a 4","5 o más"],
-required:true}]
-}],
-conditional_function: function(){
-let data = jsPsych.data.get().last(1).values()[0];
-return data.response.Q0 === "Sí";
-}
-});
-
-// DESECHO COMIDA
+// DESECHO FRECUENCIA
 
 timeline.push({
   type: jsPsychSurveyMultiChoice,
@@ -283,20 +265,45 @@ timeline.push({
     prompt:"<b>¿Con qué frecuencia se desecha la comida en tu casa?</b>",
     options:["Siempre", "Frecuentemente", "A veces","Rara Vez", "Nunca"],
     required:true
-  }]
+  }],
 });
 
 // DESECHO
 timeline.push({
-  type: jsPsychSurveyMultiSelect,
-  data: {tipo: "desecho"},
+  timeline:[{
+    type: jsPsychSurveyMultiSelect,
+    data: {tipo: "desecho"},
     questions:[{
-    prompt:"<b>¿Por qué motivos desechas la comida?</b> Podes seleccionar más de una opción",
-    options:["Porque se deterioró o se puso fea en el almacenamiento", "Porque se venció el alimento", "Porque preparé de más","Porque no guardo las sobras", "Otro"],
-    required:true,
+      prompt:"<b>¿Por qué motivos desechas la comida?</b> Podes seleccionar más de una opción",
+      options:["Porque se deterioró o se puso fea en el almacenamiento", "Porque se venció el alimento", "Porque preparé de más","Porque no guardo las sobras", "Otro"],
+      required:true,
   }]
+  }],
+  conditional_function: function(){
+  let data = jsPsych.data.get().last(1).values()[0];
+  return data.response.Q0 !== "Nunca";
+}
 });
 
+// DESECHO OTRO
+
+timeline.push({
+timeline:[{
+type: jsPsychSurveyText,
+data:{tipo:"desecho_otro"},
+name: "desecho_otro",
+questions:[
+    {
+prompt:"<b>En la pregunta anterior respondiste otro, ¿qué añadirías?</b>",
+    }]
+}],
+conditional_function: function(){
+let data = jsPsych.data.get().last(1).values()[0];
+return data.response.Q0.includes("Otro");
+}
+});
+
+  
 // PREPARADO DE COMIDA
 
 timeline.push({
@@ -318,6 +325,33 @@ questions:[
 }],
 })
 
+// ALMACENAMIENTO_OTRO
+
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyText,
+    data: { tipo: "almacenamiento_otro" },
+    name: "almacenamiento_otro",
+    questions: [
+      {
+        prompt: `
+        <p>En la pregunta <i>"¿En dónde almacenas la comida mientras tanto?"</i> respondiste "Otro"</p>
+        <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>
+        `,
+        required: false
+      }
+    ]
+  }],
+  conditional_function: function(){
+    let data = jsPsych.data.get().last(1).values()[0];
+
+    let resp = data.response?.Q1;
+
+    return Array.isArray(resp) && resp.includes("Otro");
+  }
+});
+
+  
 // RECONOCER ESTADO
 
 timeline.push({
@@ -327,6 +361,25 @@ name: "reconocimiento",
 questions:[{prompt:"<b>¿Cómo reconoces si un alimento está o no en buen estado?</b> Podes seleccionar más de una opción",
     options:["Fecha de vencimiento","Olor","Apariencia", "Textura", "Sabor", "Utilizo medidores de frío u otros dispositivos", "Otro"],
     required:true}]
+});
+
+// RECONOCIMIENTO_OTRO
+
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyText,
+    data: { tipo: "reconocimiento_otro" },
+    name: "reconocimiento_otro",
+    questions: [
+      {
+        prompt: "<p>En la pregunta anterior respondiste otro, <b>¿qué añadirías?</b> (Esta pregunta no es obligatoria)</p>"
+      }
+    ]
+  }],
+  conditional_function: function() {
+    let data = jsPsych.data.get().last(1).values()[0];
+    return data.response.Q0.includes("Otro");
+  }
 });
 
 // RECONOCER SEGURIDAD
@@ -407,6 +460,47 @@ return data.response.Q0 !== "Nada";;
 }
 });
 
+// MOTIVACIÓN_OTRO
+
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyText,
+    data: { tipo: "motivacion_otro" },
+    name: "motivacion_otro",
+    questions: [
+      {
+        prompt: `<p>En la pregunta "<i>¿Cuál sería tu motivación para comprarlo?</i>" respondiste otro</p>
+                 <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
+      }
+    ]
+  }],
+  conditional_function: function () {
+    let data = jsPsych.data.get().last(1).values()[0];
+    return data.response && data.response.Q0 && data.response.Q0.includes("Otro");
+  }
+});
+
+// CONTEXTO_OTRO
+
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyText,
+    data: { tipo: "contexto_otro" },
+    name: "contexto_otro",
+    questions: [
+      {
+        prompt: `<p>En la pregunta "<i>¿En qué contexto lo utilizarías?</i>" respondiste otro</p>
+                 <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
+      }
+    ]
+  }],
+  conditional_function: function () {
+    let data = jsPsych.data.get().filter({ tipo: "motivos" }).last(1).values()[0];
+    return data.response && data.response.Q1 && data.response.Q1.includes("Otro");
+  }
+});
+
+
 // DISPOSITIVO
 
 timeline.push({
@@ -424,6 +518,26 @@ questions:[
     required:true},  
 ]
 }],
+});
+
+// DUDAS_OTRO
+
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyText,
+    data: { tipo: "dudas_otro" },
+    name: "dudas_otro",
+    questions: [
+      {
+        prompt: `<p>En la pregunta "<i>¿Qué te generaría más dudas sobre el producto?</i>" respondiste otro</p>
+                 <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
+      }
+    ]
+  }],
+  conditional_function: function () {
+    let data = jsPsych.data.get().last(1).values()[0];
+    return data.response && data.response.Q1 && data.response.Q1.includes("Otro");
+  }
 });
 
 // PRESENTACIÓN PRODUCTO 2
@@ -509,18 +623,11 @@ raw.forEach(trial => {
   // CONVIVENCIA
   //////////////////////////////////////
   if(trial.tipo === "convivencia_cocina"){
-    limpio.convivencia = trial.response.Q0;
+    limpio.cant_personas = trial.response.Q0;
     limpio.cocina = trial.response.Q1;}
 
   //////////////////////////////////////
-  // CANTIDAD PERSONAS
-  //////////////////////////////////////
-  if(trial.tipo === "cant_personas"){
-    limpio.cant_personas = getResp();
-  }
-
-  //////////////////////////////////////
-  // DESECHO
+  // DESECHO FRECUENCIA
   //////////////////////////////////////
   if(trial.tipo === "desecho_frecuencia"){
     if(typeof trial.response === "object"){
@@ -528,9 +635,19 @@ raw.forEach(trial => {
     }
   }
 
+  //////////////////////////////////////
+  // DESECHO
+  //////////////////////////////////////
   if(trial.tipo === "desecho"){
     limpio.motivos_desecho = trial.response.Q0;
 }
+
+  //////////////////////////////////////
+  // DESECHO_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "desecho_otro"){
+    limpio.desecho_otro = trial.response.Q0;
+  }
 
   //////////////////////////////////////
   // PREPARACIÓN
@@ -541,10 +658,24 @@ raw.forEach(trial => {
   }
 
   //////////////////////////////////////
+  // ALMACENAMIENTO_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "almacenamiento_otro"){
+    limpio.almacenamiento_otro = trial.response.Q0;
+  }
+
+  //////////////////////////////////////
   // RECONOCIMIENTO
   //////////////////////////////////////
   if(trial.tipo === "reconocimiento"){
     limpio.metodos = trial.response.Q0;
+  }
+
+  //////////////////////////////////////
+  // RECONOCIMIENTO_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "reconocimiento_otro"){
+    limpio.metodos_otro = trial.response.Q0;
   }
 
   //////////////////////////////////////
@@ -577,6 +708,20 @@ raw.forEach(trial => {
         limpio.motivos_compra = trial.response.Q0;
         limpio.contexto_uso = trial.response.Q1;
     }
+  
+  //////////////////////////////////////
+  // MOTIVOS_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "motivacion_otro"){
+    limpio.motivos_otro = trial.response.Q0;
+  }
+
+  //////////////////////////////////////
+  // CONTEXTO_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "contexto_otro"){
+    limpio.contexto_otro = trial.response.Q0;
+  }
 
   //////////////////////////////////////
   // DISPOSITIVO
@@ -584,6 +729,13 @@ raw.forEach(trial => {
   if(trial.tipo === "dispositivo"){
     limpio.confianza_tec = trial.response.Q0;
     limpio.dudas = trial.response.Q1;
+  }
+
+  //////////////////////////////////////
+  // DUDAS_OTRO
+  //////////////////////////////////////
+  if(trial.tipo === "dudas_otro"){
+    limpio.dudas_otro = trial.response.Q0;
   }
 
   //////////////////////////////////////
@@ -627,5 +779,7 @@ jsPsych.run(timeline);
 </html>
 
 </script>
+</body>
+</html>
 </body>
 </html>
