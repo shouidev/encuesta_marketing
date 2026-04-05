@@ -197,7 +197,8 @@ data:{tipo:"edad"},
 name: "edad",
 questions:[{
 prompt:"<b>Edad</b>",
-required:true
+required:true,
+button_label: "Continuar"
 }],
 on_load: function(){
 
@@ -234,7 +235,8 @@ timeline.push({
       options: ["Buenos Aires","Ciudad Autónoma de Buenos Aires","Catamarca", "Chaco", "Chubut", "Córdoba","Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fé", "Santiago del Estero", "Tierra del Fuego, Antártida e Islas del Atlántico Sur", "Tucumán"],
       required: true
     }
-  ]
+  ],
+  button_label: "Continuar"
 });
 
 // CONVIVE o COCINA
@@ -252,7 +254,8 @@ timeline.push({
         prompt:"<b>¿En tu casa cocinas?</b>",
         options:["Sí", "No"],
         required:true},
-    ]
+    ],
+  button_label: "Continuar"
 });
 
 
@@ -266,6 +269,7 @@ timeline.push({
     options:["Siempre", "Frecuentemente", "A veces","Rara Vez", "Nunca"],
     required:true
   }],
+  button_label: "Continuar"
 });
 
 // DESECHO
@@ -277,7 +281,8 @@ timeline.push({
       prompt:"<b>¿Por qué motivos desechas la comida?</b> Podes seleccionar más de una opción",
       options:["Porque se deterioró o se puso fea en el almacenamiento", "Porque se venció el alimento", "Porque preparé de más","Porque no guardo las sobras", "Otro"],
       required:true,
-  }]
+  }],
+  button_label: "Continuar"
   }],
   conditional_function: function(){
   let data = jsPsych.data.get().last(1).values()[0];
@@ -321,7 +326,8 @@ questions:[
     options:["En la heladera","En un tupper u otro tipo de contenedor transportable","No la almaceno", "Otro"],
     multiple: true,
     required:true},  
-]
+],
+button_label: "Continuar"
 }],
 })
 
@@ -374,7 +380,8 @@ timeline.push({
       {
         prompt: "<p>En la pregunta anterior respondiste otro, <b>¿qué añadirías?</b> (Esta pregunta no es obligatoria)</p>"
       }
-    ]
+    ],
+    button_label: "Continuar"
   }],
   conditional_function: function() {
     let data = jsPsych.data.get().last(1).values()[0];
@@ -409,7 +416,8 @@ questions:[
     {prompt:"<b>¿Qué tan importante es para vos evitar desperdiciar comida? </b>",
     options:["Muy importante", "Bastante importante", "Algo importante","Poco importante", "Nada importante"],
     required:true},  
-]
+],
+button_label: "Continuar"
 }],
 })
 
@@ -452,7 +460,8 @@ questions:[
     options:["Cuando traslado comida durante el día", "Cuando almaceno comida en la heladera", "Si me voy de camping o me hospedo en algún lugar al aire libre","Otro"],
     multiple: true,
     required:true},  
-]
+],
+button_label: "Continuar"
 }],
 conditional_function: function(){
 let data = jsPsych.data.get().last(1).values()[0];
@@ -472,7 +481,8 @@ timeline.push({
         prompt: `<p>En la pregunta "<i>¿Cuál sería tu motivación para comprarlo?</i>" respondiste otro</p>
                  <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
       }
-    ]
+    ],
+  button_label: "Continuar"
   }],
   conditional_function: function () {
     let data = jsPsych.data.get().last(1).values()[0];
@@ -492,7 +502,8 @@ timeline.push({
         prompt: `<p>En la pregunta "<i>¿En qué contexto lo utilizarías?</i>" respondiste otro</p>
                  <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
       }
-    ]
+    ],
+  button_label: "Continuar"
   }],
   conditional_function: function () {
     let data = jsPsych.data.get().filter({ tipo: "motivos" }).last(1).values()[0];
@@ -516,7 +527,8 @@ questions:[
     {prompt:"<b>¿Qué te generaría más dudas sobre el producto? </b>",
     options:["Precisión", "Precio", "Durabilidad","Que sea fácil de utilizar", "Otro"],
     required:true},  
-]
+],
+button_label: "Continuar"
 }],
 });
 
@@ -532,7 +544,8 @@ timeline.push({
         prompt: `<p>En la pregunta "<i>¿Qué te generaría más dudas sobre el producto?</i>" respondiste otro</p>
                  <p><b>¿Qué añadirías?</b> (Esta pregunta no es obligatoria)</p>`
       }
-    ]
+    ],
+  button_label: "Continuar"
   }],
   conditional_function: function () {
     let data = jsPsych.data.get().last(1).values()[0];
@@ -564,8 +577,23 @@ questions:[
     {prompt:"<b> ¿Qué probabilidad hay de que compres este producto? </b>",
     options:["Muy Alta", "Alta", "Media","Baja", "Nula"],
     required:true},  
-]
+],
+button_label: "Continuar"
 }],
+});
+
+
+// COMENTARIO
+
+timeline.push({
+type: jsPsychSurveyText,
+data:{tipo:"comentario"},
+name: "comentario",
+questions:[
+    {
+prompt: "<p><b>Algún comentario que nos quieras dejar:</b></p>",
+    }],
+button_label: "Finalizar"
 });
 
 //////////////////////////////////////////////////////////
@@ -745,6 +773,14 @@ raw.forEach(trial => {
     limpio.precio = trial.response.Q0;
     limpio.prob_compra = trial.response.Q1;
   }
+
+  //////////////////////////////////////
+  // COMENTARIO
+  //////////////////////////////////////
+  if(trial.tipo === "comentario"){
+    limpio.comentario = trial.response.Q0;
+  }
+
 
 });
 
