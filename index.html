@@ -309,25 +309,6 @@ timeline.push({
 }
 });
 
-// DESECHO OTRO
-
-timeline.push({
-timeline:[{
-type: jsPsychSurveyText,
-data:{tipo:"desecho_otro"},
-name: "desecho_otro",
-questions:[
-    {
-prompt: "<p>En la pregunta anterior respondiste otro, <b>¿qué añadirías?</b> (Esta pregunta no es obligatoria)</p>",
-    }]
-}],
-conditional_function: function(){
-let data = jsPsych.data.get().filter({tipo: "desecho"}).last(1).values()[0];
-let resp = data.response?.Q0;
-return Array.isArray(resp) && resp.includes("Otro");}
-});
-
-  
 // PREPARADO DE COMIDA
 
 timeline.push({
@@ -491,8 +472,10 @@ questions:[
 button_label: "Continuar"
 }],
 conditional_function: function(){
-let data = jsPsych.data.get().last(1).values()[0];
-return Number(data.response.Q0) > 0;;
+let data = jsPsych.data.get().filter({tipo: "producto"}).last(1).values()[0];
+let resp = data?.response?.Q0;
+
+return resp !== undefined && Number(resp) > 0;
 }
 });
 
