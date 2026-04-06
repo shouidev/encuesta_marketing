@@ -101,15 +101,26 @@ input, textarea, select {
   transform: scale(0.8);
 }
 
+.jspsych-survey-text-question input,
+.jspsych-survey-text-question textarea {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .jspsych-btn{
 font-size:16px;
 padding:10px;
 }
 
 body{
-  background-attachment: scroll;
-}
-
+    background-size: cover;
+    background-position: center;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* clave para mobile */
+    background-color: #000; /* opcional: relleno */
+  }
 }
 
 </style>
@@ -441,7 +452,7 @@ choices:["Continuar"]
 timeline.push({
 type: jsPsychHtmlButtonResponse,
 stimulus: ` <p> Cada botón estaría diseñado para tener una larga vida útil y ser reutilizables. </p>
-            <p> La batería es recargable, y el botón puede adherirse y despegarse de cada contenedor </p> `,
+            <p> La batería es recargable y el botón puede adherirse y despegarse de cada contenedor </p> `,
 choices:["Continuar"]
 });
 
@@ -581,8 +592,8 @@ timeline.push({
 
 timeline.push({
 type: jsPsychHtmlButtonResponse,
-stimulus: ` <p> Productos similares dedicados a estimar el estado de la comida cuestan apróximadamente 30 mil pesos  </p>
-            <p> Considere que nuestro producto ofrece la posibilidad de saber el estado en tiempo real del alimento </p> `,
+stimulus: ` <p> Productos similares dedicados a estimar el estado de la comida cuestan aproximadamente 30 mil pesos  </p>
+            <p> Considera que nuestro producto ofrece la posibilidad de saber el estado en tiempo real del alimento </p> `,
 choices:["Continuar"]
 });
   
@@ -623,7 +634,7 @@ data:{tipo:"comentario"},
 name: "comentario",
 questions:[
     {
-prompt: "<p><b>¿Tenes algún comentario que nos quieras dejar?</b></p>",
+prompt: "<p><b>¿Tenés algún comentario que nos quieras dejar?</b></p>",
     }],
 button_label: "Finalizar"
 });
@@ -853,6 +864,11 @@ box-shadow:0 0 10px rgba(0,0,0,0.1);
 // INICIAR
 
 jsPsych.run(timeline);
+
+</script>
+</body>
+</html>
+
 
 </script>
 </body>
