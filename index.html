@@ -196,7 +196,7 @@ type: jsPsychSurveyText,
 data:{tipo:"edad"},
 name: "edad",
 questions:[{
-prompt:"<b>Edad</b>",
+prompt:"<b>¿Cuántos años tenes?</b>",
 required:true,
 button_label: "Continuar"
 }],
@@ -232,7 +232,7 @@ timeline.push({
   name: "provincia",
   questions: [{
       prompt: "<b>¿Dónde vivís?</b>",
-      options: ["Buenos Aires","Ciudad Autónoma de Buenos Aires","Catamarca", "Chaco", "Chubut", "Córdoba","Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fé", "Santiago del Estero", "Tierra del Fuego, Antártida e Islas del Atlántico Sur", "Tucumán"],
+      options: ["Buenos Aires","Ciudad Autónoma de Buenos Aires","Catamarca", "Chaco", "Chubut", "Córdoba","Corrientes", "Entre Ríos", "Formosa", "Jujuy", "La Pampa", "La Rioja", "Mendoza", "Misiones", "Neuquén", "Río Negro", "Salta", "San Juan", "San Luis", "Santa Cruz", "Santa Fé", "Santiago del Estero", "Tierra del Fuego, Antártida e Islas del Atlántico Sur", "Tucumán", "Otro"],
       required: true
     }
   ],
@@ -251,7 +251,7 @@ timeline.push({
         required:true},
 
         {
-        prompt:"<b>¿En tu casa cocinas?</b>",
+        prompt:"<b>¿En tu casa cocinas vos?</b>",
         options:["Sí", "No"],
         required:true},
     ],
@@ -262,16 +262,17 @@ timeline.push({
 // DESECHO FRECUENCIA
 
 timeline.push({
-  type: jsPsychSurveyMultiChoice,
+  type: jsPsychSurveyLikert,
   data:{tipo:"desecho_frecuencia"},
   questions:[{
-    prompt:"<b>¿Con qué frecuencia se desecha la comida en tu casa?</b>",
-    options:["Siempre", "Frecuentemente", "A veces","Rara Vez", "Nunca"],
+    prompt:"Siendo 0 "Nunca" y 5 "Siempre", <b>¿Con qué frecuencia se desecha la comida en tu casa?</b>",
+    labels:["0", "1", "2", "3", "4", "5"],
     required:true
   }],
   button_label: "Continuar"
 });
 
+  
 // DESECHO
 timeline.push({
   timeline:[{
@@ -317,13 +318,8 @@ type: jsPsychSurveyMultiSelect,
 data:{tipo:"preparacion"},
 name: "preparacion",
 questions:[
-    {prompt:"<b>¿Cuánto antes preparas (o preparan) tu comida antes de comerla?</b> Podes seleccionar más de una opción",
-    options:["Como inmediatamente lo que cocino","Entre 2 y 6 horas antes","Entre 6 y 13 horas", "Más de 13 horas"],
-    multiple: true,
-    required:true},
-
-    {prompt:"<b>¿En dónde almacenas la comida mientras tanto?</b> Podes seleccionar más de una opción",
-    options:["En la heladera","En un tupper u otro tipo de contenedor transportable","No la almaceno", "Otro"],
+    {prompt:"<b> ¿Soles almacenar tu comida? ¿Dónde la almacenas? </b> Podes seleccionar más de una opción",
+    options:["En la heladera","En un tupper u otro tipo de contenedor transportable", "No la almaceno", "Otro"],
     multiple: true,
     required:true},  
 ],
@@ -364,7 +360,7 @@ timeline.push({
 type: jsPsychSurveyMultiSelect,
 data:{tipo:"reconocimiento"},
 name: "reconocimiento",
-questions:[{prompt:"<b>¿Cómo reconoces si un alimento está o no en buen estado?</b> Podes seleccionar más de una opción",
+questions:[{prompt:"<b>¿Cómo reconoces si un alimento está o no en buen estado?</b> Podés seleccionar más de una opción",
     options:["Fecha de vencimiento","Olor","Apariencia", "Textura", "Sabor", "Utilizo medidores de frío u otros dispositivos", "Otro"],
     required:true}]
 });
@@ -392,35 +388,37 @@ timeline.push({
 // RECONOCER SEGURIDAD
 
 timeline.push({
-type: jsPsychSurveyMultiChoice,
+type: jsPsychSurveyLikert,
 data:{tipo:"seguridad"},
 name: "seguridad",
-questions:[{prompt:"<b>¿Qué tan seguro soles estar cuando determinas si un alimento está o no en buen estado? </b>", 
-    options:["Muy seguro","Bastante seguro","Algo seguro", "Poco seguro", "Nada seguro"],
+questions:[{
+    prompt:"Siendo 0 "Nada" y 5 "Mucho", <b>¿Qué tan seguro soles estar cuando determinas si un alimento está o no en buen estado? </b>", 
+    labels:["0","1","2","3","4","5"],
     required:true}]
 });
-
+  
 
 //  DESPERDICIO
 
 timeline.push({
 timeline:[{
-type: jsPsychSurveyMultiChoice,
+type: jsPsychSurveyLikert,
 data:{tipo:"desperdicio"},
 name: "desperdicio",
 questions:[
-    {prompt:"<b>¿Con qué frecuencia tirás alimentos “por las dudas” si están en mal estado (para evitar comerlos)? </b>",
-    options:["Siempre", "Frecuentemente", "A veces","Rara Vez", "Nunca"],
+    {prompt:"Siendo 0 "Nunca" y 5 "Siempre", "<b>¿Con qué frecuencia tirás alimentos “por las dudas” si están en mal estado (para evitar comerlos)? </b>",
+    options:["0", "1", "2","3","4","5"],
     required:true},
 
-    {prompt:"<b>¿Qué tan importante es para vos evitar desperdiciar comida? </b>",
-    options:["Muy importante", "Bastante importante", "Algo importante","Poco importante", "Nada importante"],
+    {prompt:"Siendo 0 "Nada importante" y 5 "Muy importante", <b>¿Qué tan importante es para vos evitar desperdiciar comida? </b>",
+    options:["0", "1", "2","3", "4", "5"],
     required:true},  
 ],
 button_label: "Continuar"
 }],
 })
 
+  
 // PRESENTACIÓN PRODUCTO
 
 timeline.push({
@@ -431,6 +429,15 @@ stimulus:`  <p> Nuestro producto busca solucionar el problema de los desechos do
 choices:["Continuar"]
 });
 
+// PRESENTACIÓN PRODUCTO 2
+
+timeline.push({
+type: jsPsychHtmlButtonResponse,
+stimulus: ` <p> Cada botón estaría diseñado para tener una larga vida útil y ser reutilizables. </p>
+            <p> La batería es recargable, y el botón puede adherirse y despegarse de cada contenedor </p> `,
+choices:["Continuar"]
+});
+
 
 // PRODUCTO
 
@@ -438,8 +445,8 @@ timeline.push({
   type: jsPsychHtmlButtonResponse,
   data:{tipo: "producto"},
   name: "producto",
-  stimulus: "<b> ¿Cuánto te interesaría usarlo? </b>",
-  choices: ["Mucho", "Bastante", "Algo", "Poco", "Nada"],
+  stimulus: "Siendo 0 "Nada" y 5 "Mucho", <b> ¿Cuánto te interesaría usarlo? </b>",
+  choices: ["0", "1", "2", "3", "4", "5"],
 });
 
 
@@ -451,12 +458,12 @@ type: jsPsychSurveyMultiSelect,
 data:{tipo:"motivos"},
 name: "motivos",
 questions:[
-    {prompt:"<b>¿Cuál sería tu motivación para comprarlo? </b> Podes seleccionar más de una opción ",
-    options:["Evitar el desecho de comida", "Cuidado de la salud", "Practicidad","Otro"],
+    {prompt:"<b>¿Cuál sería tu motivación para comprarlo? </b> Podés seleccionar más de una opción ",
+    options:["Evitar el desecho de comida", "Cuidado de la salud", "Saber mejor qué consumir antes","Interés por productos novedosos", "Cuidado del medio ambiente", "Otro"],
     multiple: true,
     required:true},
 
-    {prompt:"<b>¿En qué contexto lo utilizarías? </b> Podes seleccionar más de una opción ",
+    {prompt:"<b>¿En qué contexto lo utilizarías? </b> Podés seleccionar más de una opción ",
     options:["Cuando traslado comida durante el día", "Cuando almaceno comida en la heladera", "Si me voy de camping o me hospedo en algún lugar al aire libre","Otro"],
     multiple: true,
     required:true},  
@@ -520,8 +527,8 @@ type: jsPsychSurveyMultiChoice,
 data:{tipo:"dispositivo"},
 name: "dispositivo",
 questions:[
-    {prompt:"<b>¿Confiarías en un dispositivo para evaluar la calidad de los alimentos?</b>",
-    options:["Mucho", "Bastante", "Algo", "Poco","Nada"],
+    {prompt:"Siendo 0 "Nada" y 5 "Mucho", <b>¿Confiarías en un dispositivo para evaluar la calidad de los alimentos?</b>",
+    options:["0", "1", "2", "3", "4", "5"],
     required:true},
 
     {prompt:"<b>¿Qué te generaría más dudas sobre el producto? </b>",
@@ -553,15 +560,15 @@ timeline.push({
   }
 });
 
-// PRESENTACIÓN PRODUCTO 2
+// PRESENTACIÓN VENTA
 
 timeline.push({
 type: jsPsychHtmlButtonResponse,
-stimulus: ` <p> Cada botón estaría diseñado para tener una larga vida útil y ser reutilizables. </p>
-            <p> La batería es recargable, y el botón puede adherirse y despegarse de cada contenedor </p> `,
+stimulus: ` <p> Productos similares dedicados a estimar el estado de la comida cuestan apróximadamente 30 mil pesos  </p>
+            <p> Considere que nuestro producto ofrece una mayor precisión y la posibilidad de saber el estado en tiempo real del alimento </p> `,
 choices:["Continuar"]
 });
-
+  
 // VENTA
 
 timeline.push({
@@ -571,7 +578,7 @@ data:{tipo:"venta"},
 name: "venta",
 questions:[
     {prompt:"<b>¿Cuánto estarías dispuesto a pagar por una unidad de este producto?</b>",
-    options:["<30.000 pesos", "30.000 - 49.999 pesos", "50.000 - 69.999 pesos", ">70.000 pesos"],
+    options:["Menos de 30.000 pesos", "30.000 - 49.999 pesos", "50.000 - 69.999 pesos", "Más de 70.000 pesos", "No lo compraría"],
     required:true},
 
     {prompt:"<b> ¿Qué probabilidad hay de que compres este producto? </b>",
@@ -681,8 +688,7 @@ raw.forEach(trial => {
   // PREPARACIÓN
   //////////////////////////////////////
   if(trial.tipo === "preparacion"){
-    limpio.tiempo_preparacion = trial.response.Q0;
-    limpio.almacenamiento = trial.response.Q1;
+    limpio.almacenamiento = trial.response.Q0;
   }
 
   //////////////////////////////////////
