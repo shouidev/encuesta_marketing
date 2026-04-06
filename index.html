@@ -298,16 +298,14 @@ timeline.push({
     data: {tipo: "desecho"},
     questions:[{
       prompt:"<b>¿Por qué motivos desechas la comida?</b> Podés seleccionar más de una opción",
-      options:["Porque se deterioró o se puso fea en el almacenamiento", "Porque se venció el alimento", "Porque preparé de más","Porque no guardo las sobras", "Otro"],
+      options:["Porque se deterioró o se puso fea en el almacenamiento", "Porque se venció el alimento", "Porque preparé de más","Porque no guardo las sobras", "No desecho", "Otro"],
       required:true,
   }],
   button_label: "Continuar"
-  }],
-  conditional_function: function(){
-  let data = jsPsych.data.get().last(1).values()[0];
-  return Number(data.response.Q0) > 0;
-}
+  }]
 });
+
+
 
 // PREPARADO DE COMIDA
 
