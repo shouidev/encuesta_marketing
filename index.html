@@ -54,10 +54,6 @@ width:100%;
 table-layout:fixed;
 }
 
-#jspsych-survey-likert-next {
-display: none;
-}
-
 input, textarea, select {
   font-size: 12px;
 }
@@ -274,6 +270,7 @@ timeline.push({
 timeline.push({
   type: jsPsychSurveyLikert,
   data:{tipo:"desecho_frecuencia"},
+  name: "desecho_frecuencia",
   questions:[{
     prompt:`Siendo 0 "Nunca" y 5 "Siempre", <b>¿con qué frecuencia se desecha la comida en tu casa?</b>`,
     labels:["0", "1", "2", "3", "4", "5"],
@@ -297,7 +294,7 @@ timeline.push({
   }],
   conditional_function: function(){
   let data = jsPsych.data.get().last(1).values()[0];
-  return data.response.Q0 !== "Nunca";
+  return Number(data.response.Q0) > 0;
 }
 });
 
@@ -357,7 +354,7 @@ timeline.push({
   conditional_function: function(){
     let data = jsPsych.data.get().last(1).values()[0];
 
-    let resp = data.response?.Q1;
+    let resp = data.response?.Q0;
 
     return Array.isArray(resp) && resp.includes("Otro");
   }
@@ -452,13 +449,15 @@ choices:["Continuar"]
 // PRODUCTO
 
 timeline.push({
-  type: jsPsychHtmlButtonResponse,
+  type: jsPsychSurveyLikert,
   data:{tipo: "producto"},
   name: "producto",
-  stimulus: `Siendo 0 "Nada" y 5 "Mucho", <b> ¿cuánto te interesaría usarlo? </b>`,
-  choices: ["0", "1", "2", "3", "4", "5"],
+  questions:[{
+    prompt: `Siendo 0 "Nada" y 5 "Mucho", <b> ¿cuánto te interesaría usarlo? </b>`,
+    labels: ["0", "1", "2", "3", "4", "5"],
+    required: true
+    }]
 });
-
 
 // MOTIVOS
 
@@ -482,7 +481,7 @@ button_label: "Continuar"
 }],
 conditional_function: function(){
 let data = jsPsych.data.get().last(1).values()[0];
-return data.response.Q0 !== "Nada";;
+return Number(data.response.Q0) > 0;;
 }
 });
 
@@ -529,18 +528,27 @@ timeline.push({
 });
 
 
-// DISPOSITIVO
+// DISPOSITIVO_CONFIANZA
+
+timeline.push({
+  type: jsPsychSurveyLikert,
+  data:{tipo: "dispositivo_confianza"},
+  name: "dispositivo_confianza",
+  questions:[{
+    prompt: `Siendo 0 "Nada" y 5 "Mucho", <b> ¿confiarías en un dispositivo para evaluar la calidad de los alimentos? </b>`,
+    labels: ["0", "1", "2", "3", "4", "5"],
+    required: true
+    }]
+});
+
+// DISPOSITIVO_DUDAS
 
 timeline.push({
 timeline:[{
 type: jsPsychSurveyMultiChoice,
-data:{tipo:"dispositivo"},
-name: "dispositivo",
+data:{tipo:"dispositivo_dudas"},
+name: "dispositivo_dudas",
 questions:[
-    {prompt: `Siendo 0 "Nada" y 5 "Mucho", <b>¿confiarías en un dispositivo para evaluar la calidad de los alimentos?</b>`,
-    labels:["0", "1", "2", "3", "4", "5"],
-    required:true},
-
     {prompt:"<b>¿Qué te generaría más dudas sobre el producto? </b>",
     options:["Precisión", "Precio", "Durabilidad","Que sea fácil de utilizar", "Otro"],
     required:true},  
@@ -566,8 +574,7 @@ timeline.push({
   }],
   conditional_function: function () {
     let data = jsPsych.data.get().last(1).values()[0];
-    return data.response && data.response.Q1 && data.response.Q1.includes("Otro");
-  }
+    return data.response && data.response.Q0 === "Otro";  }
 });
 
 // PRESENTACIÓN VENTA
@@ -590,15 +597,23 @@ questions:[
     {prompt:"<b>¿Cuánto estarías dispuesto a pagar por una unidad de este producto?</b>",
     options:["Menos de 30.000 pesos", "30.000 - 49.999 pesos", "50.000 - 69.999 pesos", "Más de 70.000 pesos", "No lo compraría"],
     required:true},
-
-    {prompt:"<b> ¿Qué probabilidad hay de que compres este producto? </b>",
-    options:["Muy Alta", "Alta", "Media","Baja", "Nula"],
-    required:true},  
 ],
 button_label: "Continuar"
 }],
 });
 
+// PROBABILIDAD_COMPRA
+
+timeline.push({
+  type: jsPsychSurveyLikert,
+  data:{tipo: "prob_compra"},
+  name: "prob_compra",
+  questions:[{
+    prompt: `Siendo 0 "Ninguna" y 5 "Alta", <b> ¿qué probabilidad hay de que compres este producto? </b>`,
+    labels: ["0", "1", "2", "3", "4", "5"],
+    required: true
+    }]
+});
 
 // COMENTARIO
 
@@ -608,7 +623,7 @@ data:{tipo:"comentario"},
 name: "comentario",
 questions:[
     {
-prompt: "<p><b>Algún comentario que nos quieras dejar:</b></p>",
+prompt: "<p><b>¿Tenes algún comentario que nos quieras dejar?</b></p>",
     }],
 button_label: "Finalizar"
 });
@@ -742,7 +757,7 @@ raw.forEach(trial => {
   // PRODUCTO INTERÉS
   //////////////////////////////////////
   if(trial.tipo === "producto"){
-    limpio.interes = getResp()+1;
+    limpio.interes = getResp();
   }
 
   //////////////////////////////////////
@@ -768,12 +783,19 @@ raw.forEach(trial => {
   }
 
   //////////////////////////////////////
-  // DISPOSITIVO
+  // DISPOSITIVO_CONFIANZA
   //////////////////////////////////////
-  if(trial.tipo === "dispositivo"){
+  if(trial.tipo === "dispositivo_confianza"){
     limpio.confianza_tec = trial.response.Q0;
-    limpio.dudas = trial.response.Q1;
   }
+
+  //////////////////////////////////////
+  // DISPOSITIVO_DUDAS
+  //////////////////////////////////////
+  if(trial.tipo === "dispositivo_dudas"){
+    limpio.dudas = trial.response.Q0;
+  }
+
 
   //////////////////////////////////////
   // DUDAS_OTRO
@@ -787,7 +809,13 @@ raw.forEach(trial => {
   //////////////////////////////////////
   if(trial.tipo === "venta"){
     limpio.precio = trial.response.Q0;
-    limpio.prob_compra = trial.response.Q1;
+  }
+
+  //////////////////////////////////////
+  // PROBABILIDAD_COMPRA
+  //////////////////////////////////////
+  if(trial.tipo === "prob_compra"){
+    limpio.prob_compra = trial.response.Q0;
   }
 
   //////////////////////////////////////
