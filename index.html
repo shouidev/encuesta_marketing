@@ -322,9 +322,9 @@ prompt: "<p>En la pregunta anterior respondiste otro, <b>¿qué añadirías?</b>
     }]
 }],
 conditional_function: function(){
-let data = jsPsych.data.get().last(1).values()[0];
-return data.response.Q0.includes("Otro");
-}
+let data = jsPsych.data.get().filter({tipo: "desecho"}).last(1).values()[0];
+let resp = data.response?.Q0;
+return Array.isArray(resp) && resp.includes("Otro");}
 });
 
   
