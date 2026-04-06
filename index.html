@@ -469,12 +469,6 @@ questions:[
 ],
 button_label: "Continuar"
 }],
-conditional_function: function(){
-let data = jsPsych.data.get().filter({tipo: "producto"}).last(1).values()[0];
-let resp = data?.response?.Q0;
-
-return resp !== undefined && Number(resp) > 0;
-}
 });
 
 // MOTIVACIÓN_OTRO
